@@ -1,6 +1,3 @@
-[1,2,3,3]
-
-
 class Solution:
     def hasDuplicate(self, nums: List[int]) -> bool:
         if len(nums) == 0:
