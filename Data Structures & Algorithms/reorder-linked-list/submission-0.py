@@ -1,0 +1,53 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def printList(self, head: Optional[ListNode]) -> None:
+        node = head
+        arr = []
+        while node != None:
+            arr.append(node.val)
+            node = node.next
+        print(arr)
+
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        previous_node = None
+        current_node = head
+
+        while current_node != None:
+            next_node = current_node.next
+            current_node.next = previous_node
+            previous_node = current_node
+            current_node = next_node
+
+        return previous_node
+
+    def reorderList(self, head: Optional[ListNode]) -> None:
+        slow, fast = head, head
+
+        while fast != None and fast.next != None:
+            slow = slow.next
+            fast = fast.next.next
+
+        # Get head of reversed second half of the list
+        reversed_half = self.reverseList(slow)
+        # Set cutoff point to None, to prevent a cycle
+        slow.next = None
+
+        self.printList(head)
+        self.printList(reversed_half)
+
+        # Iterate through list, adding the reversed nodes in between
+        node = head
+        while node != None and reversed_half.next != None:
+            node_next = node.next # Save next ordered node
+            reversed_half_next = reversed_half.next # Save next reversed node
+
+            reversed_half.next = node_next # Connect reversed node to next ordered node
+            node.next = reversed_half # Connect node to unordered node
+
+            node = node_next # Move to the next ordered node
+            reversed_half = reversed_half_next # Move to the next unordered node
